@@ -1,19 +1,29 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
+  <!-- Project metadata -->
+  <modelVersion>4.0.0</modelVersion>
   <groupId>com.aetrna.productivity</groupId>
   <artifactId>focus-companion</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>Focus Companion</name>
   <description>A personal productivity tracker app</description>
 
+  <!-- Properties configuration -->
   <properties>
-    <!-- Use JDK 22  -->
-    <maven.compiler.source>22</maven.compiler.source>
-    <maven.compiler.target>22</maven.compiler.target>
+    <!-- Define Java compiler version -->
+    <maven.compiler.source>24</maven.compiler.source>
+    <maven.compiler.target>24</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.release>24</maven.compiler.release> <!-- Java 24 for compilation -->
+    
+    <!-- Define JavaFX version and plugin version -->
+    <javafx.version>24</javafx.version>
+    <javafx.maven.plugin.version>0.0.8</javafx.maven.plugin.version>
   </properties>
 
-  <!-- Dependencies -->
+  <!-- Dependencies section -->
   <dependencies>
 
     <!-- Gson for JSON handling -->
@@ -23,7 +33,7 @@
       <version>2.10.1</version>
     </dependency>
 
-    <!-- JUnit for testing -->
+    <!-- JUnit for unit testing -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
@@ -32,62 +42,45 @@
     </dependency>
 
     <!-- JavaFX dependencies -->
-    <!-- JavaFX controls -->
+    <!-- JavaFX controls for UI components -->
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-controls</artifactId>
-      <version>19.0.0</version> <!-- Use the latest stable version -->
+      <version>${javafx.version}</version>
     </dependency>
-
-    <!-- JavaFX FXML (optional if using FXML for UI) -->
+    
+    <!-- JavaFX FXML for UI layout if using FXML -->
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-fxml</artifactId>
-      <version>19.0.0</version>
+      <version>${javafx.version}</version>
     </dependency>
 
   </dependencies>
-
-  <!-- Repositories to download JavaFX -->
-  <repositories>
-    <repository>
-      <id>openjfx</id>
-      <url>https://openjfx.io/maven</url>
-    </repository>
-  </repositories>
 
   <!-- Build configuration -->
   <build>
     <plugins>
 
-      <!-- JavaFX Maven Plugin for running the app -->
+      <!-- Maven compiler plugin for compilation settings -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.11.0</version>
+      </plugin>
+
+      <!-- JavaFX Maven plugin for bundling and running JavaFX applications -->
       <plugin>
         <groupId>org.openjfx</groupId>
         <artifactId>javafx-maven-plugin</artifactId>
-        <version>0.0.9</version> <!-- Use the latest version -->
+        <version>${javafx.maven.plugin.version}</version>
         <configuration>
-          <mainClass>runtime.RuntimeManager</mainClass> <!-- Your main class -->
-        </configuration>
-        <executions>
-          <execution>
-            <goals>
-              <goal>run</goal> <!-- Allows mvn javafx:run to execute your app -->
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-
-      <!-- Maven Jar Plugin for packaging the app -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <version>3.3.0</version>
-        <configuration>
-          <archive>
-            <manifest>
-              <mainClass>runtime.RuntimeManager</mainClass> <!-- Main class entry point -->
-            </manifest>
-          </archive>
+          <!-- JLink configuration for bundling a custom JDK with the app -->
+          <jlinkImageName>focus-companion</jlinkImageName>
+          <!-- Launcher configuration (name of the launcher) -->
+          <launcher>focus-companion-launcher</launcher>
+          <!-- Specify the main class that starts the application -->
+          <mainClass>runtime.RuntimeManager</mainClass> <!-- Replace with actual main class -->
         </configuration>
       </plugin>
 
